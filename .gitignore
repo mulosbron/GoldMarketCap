@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+tox.ini
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pyenv
+.python-version
+
+# Node / React Native
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# .NET
+**/[Bb]in/
+**/[Oo]bj/
+**/[Ll]og/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+*.userosscache
+*.sln.cache
+*.csproj.user
+*.vbproj.user
+*.swp
+*.swo
+ReSharper/
+_ReSharper.*/
+*.sln.ide
+
+# MongoDB specific files (if any)
+mongod.conf
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.tgz
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
