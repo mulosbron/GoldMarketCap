@@ -1,0 +1,9 @@
+[Unit]
+Description=Runs Gold Price Daily Percentage Daily
+
+[Timer]
+OnCalendar=*-*-* 07:05:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
