@@ -26,8 +26,6 @@ yarn-error.log
 yarn-debug.log
 
 # .NET
-**/[Bb]in/
-**/[Oo]bj/
 **/[Ll]og/
 *.user
 *.suo
@@ -50,8 +48,6 @@ mongod.conf
 ###################
 *.com
 *.class
-*.dll
-*.exe
 *.o
 *.so
 
