@@ -1,16 +1,13 @@
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# Global Constants
 CONNECTION_STRING = "mongodb://localhost:27017"
 DB_NAME = 'gold_prices'
 COLLECTION_NAME = 'prices'
 PERCENTAGE_DIFF_COLLECTION = 'daily_percentage'
-BASE_HEX = "15180"
 DATE_FORMAT = '%Y-%m-%d %H:%M'
-DATE_FIELD = 'date'
 
 
 def custom_print(*args, **kwargs):
@@ -18,48 +15,25 @@ def custom_print(*args, **kwargs):
     print(f"[{current_time}]", *args, **kwargs)
 
 
-'''
-def find_specified_and_related_documents():
-    custom_print("Searching for specified and related documents...")
-    date = "[0x65f1a350]Milliyet"
-    with MongoClient(CONNECTION_STRING) as client:
-        collection = client[DB_NAME][COLLECTION_NAME]
-        specified_document = collection.find_one({'date': f'{date}'})
-
-        if not specified_document or 'date' not in specified_document:
-            custom_print("Document with the specified hex value not found or does not contain 'date'.")
-            return None, None
-
-        hex_value = specified_document['date'].split("[")[1].split("]")[0]
-        result_hex = f"0x{format(int(hex_value, 16) - int(BASE_HEX, 16), 'X')}".lower()
-
-        related_document = collection.find_one({'date': f"[{result_hex}]Milliyet"})
-
-        if related_document:
-            custom_print("Related document found successfully.")
-        else:
-            custom_print("Related document not found.")
-
-        return specified_document, related_document
-'''
-
-
 def find_latest_and_related_documents():
     custom_print("Searching for the latest and related documents...")
     with MongoClient(CONNECTION_STRING) as client:
         collection = client[DB_NAME][COLLECTION_NAME]
-        latest_document = collection.find_one(sort=[('_id', -1)])
-        if not latest_document or 'date' not in latest_document:
-            custom_print("The latest document added was not found or does not contain 'date'.")
+        latest_document = collection.find_one(sort=[('date', -1)])
+
+        if not latest_document:
+            custom_print("The latest document added was not found.")
             return None, None
 
-        hex_value = latest_document['date'].split("[")[1].split("]")[0]
-        result_hex = f"0x{format(int(hex_value, 16) - int(BASE_HEX, 16), 'X')}".lower()
-        related_document = collection.find_one({'date': f"[{result_hex}]Milliyet"})
+        latest_date = datetime.strptime(latest_document['date'], '%Y-%m-%d')
+        related_date = latest_date - timedelta(days=1)
+        related_document = collection.find_one({'date': related_date.strftime('%Y-%m-%d')})
+
         if related_document:
             custom_print("Related document found successfully.")
         else:
             custom_print("Related document not found.")
+
         return latest_document, related_document
 
 
@@ -78,7 +52,7 @@ def save_percentage_difference_to_mongodb(json1, percentage_diff):
         db = client[DB_NAME]
         collection = db[PERCENTAGE_DIFF_COLLECTION]
         document = {
-            DATE_FIELD: json1[DATE_FIELD],
+            'date': json1['date'],
             "percentage_difference": percentage_diff.to_dict()
         }
         collection.insert_one(document)

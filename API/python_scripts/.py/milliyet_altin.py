@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
+from datetime import datetime
 
 URL = 'https://uzmanpara.milliyet.com.tr/altin-fiyatlari/'
 HEADERS = {
@@ -67,9 +67,7 @@ def save_to_mongo(prices):
         db = client[DATABASE_NAME]
         collection = db[COLLECTION_NAME]
         current_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        utc_plus_3_date = current_date + timedelta(hours=3)
-        hex_current_timestamp = hex(int(utc_plus_3_date.timestamp()))
-        today = f'[{hex_current_timestamp}]Milliyet'
+        today = current_date.strftime('%Y-%m-%d')
         data_with_date = {'date': today, 'data': prices}
         collection.insert_one(data_with_date)
         custom_print("Data successfully saved to MongoDB.")
@@ -84,3 +82,4 @@ if __name__ == '__main__':
         custom_print("Process successfully completed. It will be retried after one day.")
     except Exception as exc:
         custom_print(f"An error occurred: {exc}")
+
