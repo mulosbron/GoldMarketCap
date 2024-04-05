@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="#B28400"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/marketsButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="@string/markets"
+        android:background="?android:attr/selectableItemBackground"
+        android:textColor="#FFFDD0"/>
+
+    <Button
+        android:id="@+id/portfolioButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="@string/portfolio"
+        android:background="?android:attr/selectableItemBackground"
+        android:textColor="#FFFDD0"/>
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="@string/settings"
+        android:background="?android:attr/selectableItemBackground"
+        android:textColor="#FFFDD0"/>
+</LinearLayout>
+
+

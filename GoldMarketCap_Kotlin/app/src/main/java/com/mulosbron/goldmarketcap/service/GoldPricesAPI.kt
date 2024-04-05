@@ -5,7 +5,7 @@ import retrofit2.Call
 import com.mulosbron.goldmarketcap.model.GoldPrice
 
 interface GoldPricesAPI {
-    @GET("api/goldprices/latest")
+    @GET("api/gold-prices/latest")
     fun getLatestGoldPrices(): Call<Map<String, GoldPrice>>
 }
 
