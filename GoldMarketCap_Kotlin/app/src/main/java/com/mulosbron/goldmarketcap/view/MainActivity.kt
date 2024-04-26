@@ -1,11 +1,14 @@
 package com.mulosbron.goldmarketcap.view
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.auth0.android.jwt.JWT
 import com.mulosbron.goldmarketcap.R
 import com.mulosbron.goldmarketcap.adapter.RecyclerViewAdapter
 import com.mulosbron.goldmarketcap.model.GoldPrice
@@ -24,6 +27,7 @@ class MainActivity : FooterActivity(), RecyclerViewAdapter.Listener {
     private lateinit var goldPrices: Map<String, GoldPrice>
     private lateinit var dailyPercentages: Map<String, DailyPercentage>
     private val baseURL = "https://goldmarketcap.xyz/"
+    //private val baseURL = "http://10.0.2.2:5000/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,13 @@ class MainActivity : FooterActivity(), RecyclerViewAdapter.Listener {
         recyclerView.layoutManager = LinearLayoutManager(this)
         loadApis()
         setupFooterNavigation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isTokenExpired()) {
+            logoutUser()
+        }
     }
 
     private fun getRetrofitInstance(): Retrofit {
@@ -114,5 +125,33 @@ class MainActivity : FooterActivity(), RecyclerViewAdapter.Listener {
     override fun onItemClick(goldType: String, goldPrice: GoldPrice) {
         Toast.makeText(this, "Clicked: $goldType - Buying: ${goldPrice.buyingPrice}, " +
                 "Selling: ${goldPrice.sellingPrice}", Toast.LENGTH_LONG).show()
+    }
+
+    private fun getSavedAuthToken(): String? {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("auth_token", null)
+    }
+
+    private fun isTokenExpired(): Boolean {
+        val token = getSavedAuthToken()
+        return if (token != null) {
+            try {
+                val jwt = JWT(token)
+                jwt.isExpired(0)
+            } catch (e: Exception) {
+                true
+            }
+        } else {
+            true
+        }
+    }
+
+    private fun logoutUser() {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        sharedPreferences.edit().remove("auth_token").apply()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

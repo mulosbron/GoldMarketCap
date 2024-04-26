@@ -4,11 +4,11 @@
     android:layout_height="60dp"
     android:background="#B28400"
     android:gravity="center"
-    android:padding="16dp">
+    android:padding="4dp">
 
     <Button
         android:id="@+id/marketsButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="@string/markets"
@@ -17,7 +17,7 @@
 
     <Button
         android:id="@+id/portfolioButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="@string/portfolio"
@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/settingsButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="@string/settings"

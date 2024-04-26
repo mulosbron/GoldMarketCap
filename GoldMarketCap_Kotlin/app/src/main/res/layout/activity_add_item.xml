@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFC107">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RadioGroup
+        android:id="@+id/buySellToggleGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/header"
+        android:weightSum="2">
+
+        <RadioButton
+            android:id="@+id/buyButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/buy"
+            android:button="@null"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <RadioButton
+            android:id="@+id/sellButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sell"
+            android:button="@null"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"/>
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/buySellToggleGroup"
+        android:padding="72dp">
+
+        <EditText
+            android:id="@+id/amountEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/quantity"
+            android:inputType="numberDecimal"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/priceEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/price"
+            android:inputType="numberDecimal"
+            android:gravity="center"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_txn"
+        android:background="#FF9800"
+        android:textColor="#FFFFFF"
+        android:layout_above="@id/footer_navigation"
+        android:layout_margin="16dp"/>
+
+    <include
+        android:id="@+id/footer_navigation"
+        layout="@layout/footer_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

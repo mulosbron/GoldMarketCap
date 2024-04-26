@@ -1,17 +1,27 @@
 <resources>
     <string name="app_name">GoldMarketCap</string>
-    <string name="sign_up">Kaydol</string>
+    <string name="signup">Kaydol</string>
     <string name="login">Giriş Yap</string>
-    <string name="password">Şifre</string>
-    <string name="confirm_password">Şifreyi Doğrula</string>
-    <string name="enter_your_email_to_sign_up_for_this_app">Uygulamaya kaydolmak için e-posta adresinizi girin</string>
-    <string name="email_domain_com">email@alanadı.com</string>
+    <string name="pwd">Şifre</string>
+    <string name="forgot_pwd">Şifremi Unuttum</string>
+    <string name="new_pwd">Yeni Şifre</string>
+    <string name="reset_pwd">Yeni Şifre İste</string>
+    <string name="confirm_pwd">Şifreyi Doğrula</string>
+    <string name="token">Token</string>
+    <string name="signup_email">Uygulamaya kaydolmak için e-posta adresinizi girin</string>
+    <string name="email_hint">email@alanadı.com</string>
     <string name="todo">TODO</string>
     <string name="header">GoldMarketCap</string>
     <string name="markets">Piyasalar</string>
     <string name="portfolio">Portföy</string>
     <string name="settings">Ayarlar</string>
-    <string name="register_prompt">Üyeliğiniz yok mu? Kayıt olun</string>
+    <string name="signup_prompt">Üyeliğiniz yok mu? Kayıt olun</string>
     <string name="login_prompt">Üyeliğiniz var mı? Giriş yapın</string>
+    <string name="buy">Al</string>
+    <string name="sell">Sat</string>
+    <string name="quantity">Miktar</string>
+    <string name="price">Fiyat</string>
+    <string name="add_txn">Ekle</string>
 </resources>
+
 
