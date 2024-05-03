@@ -48,12 +48,12 @@ class RegisterActivity : FooterActivity() {
         val confirmPassword = etConfirmPassword.text.toString().trim()
 
         if(email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "E-posta ve şifre alanları boş bırakılamaz.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Email and password fields cannot be left blank", Toast.LENGTH_SHORT).show()
             return
         }
 
         if(password != confirmPassword){
-            Toast.makeText(this, "Şifreler uyuşmuyor.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -71,12 +71,12 @@ class RegisterActivity : FooterActivity() {
                     val registerResponse = response.body()!!
                     Toast.makeText(this@RegisterActivity, registerResponse.message, Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@RegisterActivity, "Kayıt başarısız.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegisterActivity, "Registration unsuccessful", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
-                Toast.makeText(this@RegisterActivity, "Ağ hatası: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegisterActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }

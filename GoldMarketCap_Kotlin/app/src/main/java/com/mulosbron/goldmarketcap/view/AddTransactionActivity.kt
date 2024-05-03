@@ -11,13 +11,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.mulosbron.goldmarketcap.model.GoldPrice
 import com.mulosbron.goldmarketcap.service.GoldPricesAPI
 import com.mulosbron.goldmarketcap.service.QueryAPI
@@ -42,17 +38,22 @@ class AddTransactionActivity : FooterActivity() {
 
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                // Do nothing
+
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Do nothing
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchGoldItems()
             }
         })
+
+        goldItemsListView.setOnItemClickListener { adapterView, view, position, id ->
+            val intent = Intent(this@AddTransactionActivity, AddProductActivity::class.java)
+            intent.putExtra("goldName", adapterView.getItemAtPosition(position) as String)
+            startActivity(intent)
+        }
     }
 
     private fun getRetrofitInstance(): Retrofit {
@@ -131,7 +132,7 @@ class AddTransactionActivity : FooterActivity() {
                 }
             })
         } else {
-            Toast.makeText(this, "Please enter a search query", Toast.LENGTH_SHORT).show()
+            loadGoldTypes()
         }
     }
 }

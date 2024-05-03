@@ -1,5 +1,6 @@
 package com.mulosbron.goldmarketcap.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -21,8 +22,14 @@ open class FooterActivity : AppCompatActivity() {
 
         val portfolioButton: Button = findViewById(R.id.portfolioButton)
         portfolioButton.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            val isUserLoggedIn = checkUserLoggedIn()
+            if (isUserLoggedIn) {
+                val intent = Intent(this, EmptyPortfolioActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         /*
@@ -32,5 +39,11 @@ open class FooterActivity : AppCompatActivity() {
             startActivity(intent)
         }
         */
+    }
+
+    private fun checkUserLoggedIn(): Boolean {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("auth_token", null)
+        return token != null
     }
 }

@@ -69,12 +69,12 @@ class LoginActivity : FooterActivity() {
                     loginResponse.token?.let { saveAuthToken(it) }
                     Toast.makeText(this@LoginActivity, loginResponse.message, Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@LoginActivity, "Giriş başarısız.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Login unsuccessful", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
-                Toast.makeText(this@LoginActivity, "Ağ hatası: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }

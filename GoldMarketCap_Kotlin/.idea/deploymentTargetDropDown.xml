@@ -5,6 +5,9 @@
       <entry key="AddItemActivity">
         <State />
       </entry>
+      <entry key="AddTransactionActivity">
+        <State />
+      </entry>
       <entry key="EmptyPortfolioActivity">
         <State />
       </entry>
@@ -12,9 +15,6 @@
         <State />
       </entry>
       <entry key="MainActivity">
-        <State />
-      </entry>
-      <entry key="ResetPasswordActivity">
         <State />
       </entry>
       <entry key="app">

@@ -70,22 +70,28 @@ class MainActivity : FooterActivity(), RecyclerViewAdapter.Listener {
         val goldPricesAPI = retrofit.create(GoldPricesAPI::class.java)
 
         goldPricesAPI.getLatestGoldPrices().enqueue(object : Callback<Map<String, GoldPrice>> {
-            override fun onResponse(call: Call<Map<String, GoldPrice>>,
-                                    response: Response<Map<String, GoldPrice>>) {
+            override fun onResponse(
+                call: Call<Map<String, GoldPrice>>,
+                response: Response<Map<String, GoldPrice>>
+            ) {
                 if (response.isSuccessful) {
                     goldPrices = response.body() ?: emptyMap()
                     if (dailyPercentages.isNotEmpty()) {
                         setAdapter()
                     }
                 } else {
-                    Toast.makeText(this@MainActivity, "Failed to load gold prices",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@MainActivity, "Failed to load gold prices",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
             override fun onFailure(call: Call<Map<String, GoldPrice>>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Error: ${t.message}",
-                    Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@MainActivity, "Error: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
     }
@@ -94,26 +100,32 @@ class MainActivity : FooterActivity(), RecyclerViewAdapter.Listener {
         val retrofit = getRetrofitInstance()
         val dailyPercentagesAPI = retrofit.create(DailyPercentagesAPI::class.java)
 
-        dailyPercentagesAPI.getLatestDailyPercentages().enqueue(object : Callback<Map<String, DailyPercentage>>
-        {
-            override fun onResponse(call: Call<Map<String, DailyPercentage>>,
-                                    response: Response<Map<String, DailyPercentage>>) {
-                if (response.isSuccessful) {
-                    dailyPercentages = response.body() ?: emptyMap()
-                    if (goldPrices.isNotEmpty()) {
-                        setAdapter()
+        dailyPercentagesAPI.getLatestDailyPercentages()
+            .enqueue(object : Callback<Map<String, DailyPercentage>> {
+                override fun onResponse(
+                    call: Call<Map<String, DailyPercentage>>,
+                    response: Response<Map<String, DailyPercentage>>
+                ) {
+                    if (response.isSuccessful) {
+                        dailyPercentages = response.body() ?: emptyMap()
+                        if (goldPrices.isNotEmpty()) {
+                            setAdapter()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@MainActivity, "Failed to load daily percentages",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                } else {
-                    Toast.makeText(this@MainActivity, "Failed to load daily percentages",
-                        Toast.LENGTH_SHORT).show()
                 }
-            }
 
-            override fun onFailure(call: Call<Map<String, DailyPercentage>>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Error: ${t.message}",
-                    Toast.LENGTH_LONG).show()
-            }
-        })
+                override fun onFailure(call: Call<Map<String, DailyPercentage>>, t: Throwable) {
+                    Toast.makeText(
+                        this@MainActivity, "Error: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
     }
 
     private fun setAdapter() {
@@ -123,8 +135,10 @@ class MainActivity : FooterActivity(), RecyclerViewAdapter.Listener {
     }
 
     override fun onItemClick(goldType: String, goldPrice: GoldPrice) {
-        Toast.makeText(this, "Clicked: $goldType - Buying: ${goldPrice.buyingPrice}, " +
-                "Selling: ${goldPrice.sellingPrice}", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this, "Clicked: $goldType - Buying: ${goldPrice.buyingPrice}, " +
+                    "Selling: ${goldPrice.sellingPrice}", Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun getSavedAuthToken(): String? {

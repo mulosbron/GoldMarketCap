@@ -17,13 +17,15 @@ GoldMarketCap, Kotlin dili kullanılarak geliştirilen bir Android uygulamasıd�
 - **`DailyPercentage.kt`**: Altın fiyatlarındaki günlük yüzdelik değişimleri temsil eden veri modeli.
 - **`GoldPrice.kt`**: Altın fiyatlarını temsil eden veri modeli.
 - **`UserAuth.kt`**: Kullanıcı veri modeli.
+- **`Transaction.kt`**: Porföye işlem eklemek için gerekli model.
 
 ## Servisler
 
 - **`DailyPercentagesAPI.kt`**: Günlük yüzdelik değişimleri çekmek için REST API servisi.
 - **`GoldPricesAPI.kt`**: Güncel altın fiyatlarını çekmek için REST API servisi.
 - **`UserAPI.kt`**: Kullanıcı için REST API servisi.
-- **`QueryAPI.kt`**: Kullanıcı için REST API servisi.
+- **`QueryAPI.kt`**: Arama çubuğu için REST API servisi.
+- **`PortfolioAPI.kt`**: Portföy kısmı için REST API servisi.
 
 ## Adaptörler
 

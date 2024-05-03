@@ -41,12 +41,12 @@ class ResetPasswordActivity : FooterActivity() {
         val confirmNewPassword = etConfirmNewPassword.text.toString().trim()
 
         if(token.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
-            Toast.makeText(this, "Tüm alanları doldurun", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
         if(newPassword != confirmNewPassword) {
-            Toast.makeText(this, "Şifreler eşleşmiyor", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -65,12 +65,12 @@ class ResetPasswordActivity : FooterActivity() {
                     val loginIntent = Intent(this@ResetPasswordActivity, LoginActivity::class.java)
                     startActivity(loginIntent)
                 } else {
-                    Toast.makeText(this@ResetPasswordActivity, "Şifre sıfırlama başarısız", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ResetPasswordActivity, "Password reset unsuccessful", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResetPasswordResponse>, t: Throwable) {
-                Toast.makeText(this@ResetPasswordActivity, "Ağ hatası: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ResetPasswordActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }

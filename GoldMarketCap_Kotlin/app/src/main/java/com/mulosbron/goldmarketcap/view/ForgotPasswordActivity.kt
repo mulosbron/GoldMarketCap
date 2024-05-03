@@ -32,10 +32,10 @@ class ForgotPasswordActivity : FooterActivity() {
     }
 
     private fun performForgotPassword() {
-        val email = findViewById<EditText>(R.id.etEmailForReset).text.toString() // EditText id'si etEmailForReset olmalıdır.
+        val email = findViewById<EditText>(R.id.etEmailForReset).text.toString()
 
         if (email.isEmpty()) {
-            Toast.makeText(this, "Lütfen e-posta adresinizi girin", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter your email address", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -55,12 +55,12 @@ class ForgotPasswordActivity : FooterActivity() {
                     val intent = Intent(this@ForgotPasswordActivity, ResetPasswordActivity::class.java)
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this@ForgotPasswordActivity, "Bir hata oluştu. Lütfen tekrar deneyin.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ForgotPasswordActivity, "An error occurred. Please try again", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
-                Toast.makeText(this@ForgotPasswordActivity, "Ağ hatası: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ForgotPasswordActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
