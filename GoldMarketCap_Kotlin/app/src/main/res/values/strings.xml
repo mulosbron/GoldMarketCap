@@ -2,6 +2,7 @@
     <string name="app_name">GoldMarketCap</string>
     <string name="signup">Kaydol</string>
     <string name="login">Giriş Yap</string>
+    <string name="logout">Çıkış Yap</string>
     <string name="pwd">Şifre</string>
     <string name="forgot_pwd">Şifremi Unuttum</string>
     <string name="new_pwd">Yeni Şifre</string>
@@ -22,6 +23,8 @@
     <string name="quantity">Miktar</string>
     <string name="price">Fiyat</string>
     <string name="add_txn">Ekle</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
 
 

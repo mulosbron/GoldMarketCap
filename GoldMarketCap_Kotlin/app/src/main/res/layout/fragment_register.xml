@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".view.fragment.RegisterFragment"
     android:background="#FFC107">
 
     <include
@@ -13,8 +15,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/header"
-        android:layout_above="@id/footer_navigation"
         android:fillViewport="true">
 
         <LinearLayout
@@ -22,14 +22,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="24dp">
+            android:paddingTop="16dp">
 
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/xxxhdpi"
-                android:layout_marginTop="32dp"/>
+                android:layout_marginBottom="32dp"
+                android:contentDescription="@string/app_name" />
 
             <EditText
                 android:id="@+id/etEmail"
@@ -37,7 +38,13 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email_hint"
                 android:inputType="textEmailAddress"
-                android:layout_marginTop="16dp"/>
+                android:layout_margin="16dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textColorHighlight="@color/black"
+                android:backgroundTint="@color/black"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/etPassword"
@@ -45,7 +52,12 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/pwd"
                 android:inputType="textPassword"
-                android:layout_marginTop="16dp"/>
+                android:layout_margin="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textColorHighlight="@color/black"
+                android:backgroundTint="@color/black"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/etConfirmPassword"
@@ -53,36 +65,32 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/confirm_pwd"
                 android:inputType="textPassword"
-                android:layout_marginTop="16dp"/>
+                android:layout_margin="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textColorHighlight="@color/black"
+                android:backgroundTint="@color/black"
+                android:autofillHints="" />
 
             <Button
                 android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/signup"
-                android:textColor="#FFFDD0"
-                android:background="#B28400"
-                android:layout_marginTop="24dp"/>
+                android:backgroundTint="@color/black"
+                android:textColor="#FFC107"
+                android:layout_margin="16dp"/>
 
             <TextView
                 android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_prompt"
-                android:textColor="#737373"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:textSize="16sp"
-                android:gravity="center_horizontal"/>
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
     </ScrollView>
-
-    <include
-        android:id="@+id/footer_navigation"
-        layout="@layout/footer_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"/>
-</RelativeLayout>
-
-
+</FrameLayout>

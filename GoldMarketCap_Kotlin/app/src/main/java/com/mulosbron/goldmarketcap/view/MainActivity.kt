@@ -1,171 +1,74 @@
 package com.mulosbron.goldmarketcap.view
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.auth0.android.jwt.JWT
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.mulosbron.goldmarketcap.R
-import com.mulosbron.goldmarketcap.adapter.RecyclerViewAdapter
-import com.mulosbron.goldmarketcap.model.GoldPrice
-import com.mulosbron.goldmarketcap.model.DailyPercentage
-import com.mulosbron.goldmarketcap.service.GoldPricesAPI
-import com.mulosbron.goldmarketcap.service.DailyPercentagesAPI
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.mulosbron.goldmarketcap.databinding.ActivityMainBinding
+import com.mulosbron.goldmarketcap.view.fragment.*
+import org.json.JSONObject
 
-class MainActivity : FooterActivity(), RecyclerViewAdapter.Listener {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var goldPrices: Map<String, GoldPrice>
-    private lateinit var dailyPercentages: Map<String, DailyPercentage>
-    private val baseURL = "https://goldmarketcap.xyz/"
-    //private val baseURL = "http://10.0.2.2:5000/"
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        loadApis()
-        setupFooterNavigation()
-    }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    override fun onResume() {
-        super.onResume()
-        if (isTokenExpired()) {
-            logoutUser()
-        }
-    }
+        replaceFragment(MarketFragment())
 
-    private fun getRetrofitInstance(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(baseURL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private fun loadApis() {
-        goldPrices = emptyMap()
-        dailyPercentages = emptyMap()
-
-        loadGoldPrices()
-        loadDailyPercentages()
-    }
-
-    private fun loadGoldPrices() {
-        val retrofit = getRetrofitInstance()
-        val goldPricesAPI = retrofit.create(GoldPricesAPI::class.java)
-
-        goldPricesAPI.getLatestGoldPrices().enqueue(object : Callback<Map<String, GoldPrice>> {
-            override fun onResponse(
-                call: Call<Map<String, GoldPrice>>,
-                response: Response<Map<String, GoldPrice>>
-            ) {
-                if (response.isSuccessful) {
-                    goldPrices = response.body() ?: emptyMap()
-                    if (dailyPercentages.isNotEmpty()) {
-                        setAdapter()
-                    }
-                } else {
-                    Toast.makeText(
-                        this@MainActivity, "Failed to load gold prices",
-                        Toast.LENGTH_SHORT
-                    ).show()
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.navigation_markets -> {
+                    replaceFragment(MarketFragment())
+                    true
                 }
-            }
-
-            override fun onFailure(call: Call<Map<String, GoldPrice>>, t: Throwable) {
-                Toast.makeText(
-                    this@MainActivity, "Error: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        })
-    }
-
-    private fun loadDailyPercentages() {
-        val retrofit = getRetrofitInstance()
-        val dailyPercentagesAPI = retrofit.create(DailyPercentagesAPI::class.java)
-
-        dailyPercentagesAPI.getLatestDailyPercentages()
-            .enqueue(object : Callback<Map<String, DailyPercentage>> {
-                override fun onResponse(
-                    call: Call<Map<String, DailyPercentage>>,
-                    response: Response<Map<String, DailyPercentage>>
-                ) {
-                    if (response.isSuccessful) {
-                        dailyPercentages = response.body() ?: emptyMap()
-                        if (goldPrices.isNotEmpty()) {
-                            setAdapter()
-                        }
+                R.id.navigation_portfolio, R.id.navigation_settings -> {
+                    if (checkUserLoggedIn()) {
+                        replaceFragment(if (item.itemId == R.id.navigation_portfolio) PortfolioFragment() else SettingsFragment())
+                        true
                     } else {
-                        Toast.makeText(
-                            this@MainActivity, "Failed to load daily percentages",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        replaceFragment(LoginFragment())
+                        true
                     }
                 }
-
-                override fun onFailure(call: Call<Map<String, DailyPercentage>>, t: Throwable) {
-                    Toast.makeText(
-                        this@MainActivity, "Error: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            })
-    }
-
-    private fun setAdapter() {
-        if (goldPrices.isNotEmpty() && dailyPercentages.isNotEmpty()) {
-            recyclerView.adapter = RecyclerViewAdapter(goldPrices, dailyPercentages, this)
-        }
-    }
-
-    override fun onItemClick(goldType: String, goldPrice: GoldPrice) {
-        Toast.makeText(
-            this, "Clicked: $goldType - Buying: ${goldPrice.buyingPrice}, " +
-                    "Selling: ${goldPrice.sellingPrice}", Toast.LENGTH_LONG
-        ).show()
-    }
-
-    private fun getSavedAuthToken(): String? {
-        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-        return sharedPreferences.getString("auth_token", null)
-    }
-
-    private fun isTokenExpired(): Boolean {
-        val token = getSavedAuthToken()
-        return if (token != null) {
-            try {
-                val jwt = JWT(token)
-                jwt.isExpired(0)
-            } catch (e: Exception) {
-                true
+                else -> false
             }
-        } else {
-            true
         }
     }
 
-    private fun logoutUser() {
+    fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
+    }
+
+    private fun checkUserLoggedIn(): Boolean {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("auth_token", null) != null
+    }
+
+    fun saveAuthToken(token: String) {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString("auth_token", token).apply()
+    }
+
+    fun saveUsername(message: String) {
+        val username = message.split(" ").last()
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString("username", username).apply()
+    }
+
+    fun getUsername(): String {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("username", "defaultUsername") ?: "defaultUsername"
+    }
+
+    fun logOutUser() {
         val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
         sharedPreferences.edit().remove("auth_token").apply()
-
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
+        sharedPreferences.edit().remove("username").apply()
+        replaceFragment(LoginFragment())
     }
 }

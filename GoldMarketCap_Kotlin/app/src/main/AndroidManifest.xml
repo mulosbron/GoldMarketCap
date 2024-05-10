@@ -17,41 +17,6 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".view.AddProductActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".view.AddTransactionActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".view.EmptyPortfolioActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".view.ResetPasswordActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".view.ForgotPasswordActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".view.RegisterActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".view.LoginActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
             android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
