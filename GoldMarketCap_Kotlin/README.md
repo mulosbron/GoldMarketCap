@@ -35,9 +35,19 @@ GoldMarketCap, Kotlin dili kullanılarak geliştirilen bir Android uygulamasıd�
 - **`RecyclerViewAdapter.kt`**: Altın piyasa verilerini listelemek için RecyclerView'a veri bağlamayı yöneten adaptör.
 - **`PortfolioAdapter.kt`**: Kullanıcı portföy verilerini listelemek için RecyclerView'a veri bağlamayı yöneten adaptör.
 
+## Layoutlar [2024/05/17]
+
+- **`fragment_market.xml`**: Piyasa verileri için layout.
+![market](https://uui7vnqyrvycdbwcrqpdw5ocevbtmzc2ulpzdozcwaijrk552nfa.arweave.net/pRH6thiNcCGGwoweO3XCJUM2ZFqi35G7IrAQmKu900o)
+
+- **`fragment_portfolio.xml`**: Kullanıcının portföyü için layout.
+![porfolio](https://m5jwesaiekpptvkhy7334ikkatfzgvroqdihapgsfqk7fh24ihyq.arweave.net/Z1NiSAginvnVR8f3viFKBMuTVi6A0HA80iwV8p9cQfE)
+
+-----------------------------------------------------------------------------------------
+
 ## Layoutlar [2024/05/10]
 
-- **`fragment_market.xml`**: Uygulamanın ana ekran düzenini tanımlar.
+- **`fragment_market.xml`**: Piyasa verileri için layout.
 ![market](https://uadspyr2z4tvguaplgwat62skjwb6b2w7h4nfh45ej7rncwbcpla.arweave.net/oAcn4jrPJ1NQD1msCftSUmwfB1b5-NKfnSJ_ForBE9Y)
 
 
@@ -63,7 +73,7 @@ GoldMarketCap, Kotlin dili kullanılarak geliştirilen bir Android uygulamasıd�
 ![empty_porfolio](https://6mpv22uurkqob6zwkxrjkfrm2docyidcxtnaireqesn3jasvn55q.arweave.net/8x9dapSKoOD7NlXilRYs0NwsIGK82gREkCSbtIJVb3s)
 
 
-- **`fragment_portfolio.xml`**: Kullanıcının portföyü boş ise karşısına çıkacak layout.
+- **`fragment_portfolio.xml`**: Kullanıcının portföyü için layout.
 ![porfolio](https://g4nzham33sw2v2kpzddj3zb3k5sw2sffcyiadsr34tj3h5vtktlq.arweave.net/NxuTgZvcrarpT8jGneQ7V2VtSKUWEAHKO-TTs_azVNc)
 
 

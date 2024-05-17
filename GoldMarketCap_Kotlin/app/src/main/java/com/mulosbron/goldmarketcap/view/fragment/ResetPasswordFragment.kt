@@ -9,16 +9,21 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mulosbron.goldmarketcap.R
-import com.mulosbron.goldmarketcap.view.APIService
+import com.mulosbron.goldmarketcap.service.ApiService
 
 class ResetPasswordFragment : Fragment() {
 
     private lateinit var etToken: EditText
     private lateinit var etNewPassword: EditText
     private lateinit var etConfirmNewPassword: EditText
-    private lateinit var apiService: APIService
+    private lateinit var btnResetPassword: Button
+    private lateinit var apiService: ApiService
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_reset_password, container, false)
     }
 
@@ -28,26 +33,25 @@ class ResetPasswordFragment : Fragment() {
         etToken = view.findViewById(R.id.etToken)
         etNewPassword = view.findViewById(R.id.etNewPassword)
         etConfirmNewPassword = view.findViewById(R.id.etConfirmNewPassword)
-        apiService = APIService(this)
+        btnResetPassword = view.findViewById(R.id.btnResetPassword)
+        apiService = ApiService(this)
 
-        val btnResetPassword: Button = view.findViewById(R.id.btnResetPassword)
         btnResetPassword.setOnClickListener {
             performResetPassword()
         }
     }
 
     private fun performResetPassword() {
-
         val token = etToken.text.toString().trim()
         val newPassword = etNewPassword.text.toString().trim()
         val confirmNewPassword = etConfirmNewPassword.text.toString().trim()
 
-        if(token.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+        if (token.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
             Toast.makeText(requireContext(), "Fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if(newPassword != confirmNewPassword) {
+        if (newPassword != confirmNewPassword) {
             Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT).show()
             return
         }

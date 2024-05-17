@@ -5,6 +5,3 @@ data class GoldPrice(
     val buyingPrice: Int,
     val sellingPrice: Int
 )
-
-
-

@@ -7,43 +7,46 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mulosbron.goldmarketcap.R
-import com.mulosbron.goldmarketcap.model.GoldPrice
 import com.mulosbron.goldmarketcap.model.DailyPercentage
+import com.mulosbron.goldmarketcap.model.GoldPrice
 
-class RecyclerViewAdapter(private val goldPricesMap: Map<String, GoldPrice>,
-                          private val dailyPercentagesMap: Map<String, DailyPercentage>,
-                          private val listener: Listener) : RecyclerView.Adapter<RecyclerViewAdapter.RowHolder>()
-{
+class RecyclerViewAdapter(
+    private val goldPricesMap: Map<String, GoldPrice>,
+    private val dailyPercentagesMap: Map<String, DailyPercentage>,
+    private val listener: Listener
+) : RecyclerView.Adapter<RecyclerViewAdapter.RowHolder>() {
 
-    private val colors: Array<String> = arrayOf("#FFD700","#FFDF00")
+    private val colors: Array<String> = arrayOf("#FFD700", "#FFDF00")
     private val goldPricesList = goldPricesMap.toList()
     private val dailyPercentagesList = dailyPercentagesMap.toList()
 
-    interface Listener{
+    interface Listener {
         fun onItemClick(goldType: String, goldPrice: GoldPrice)
     }
 
     class RowHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val textName: TextView = view.findViewById(R.id.text_name)
-        private val textBuyingPrice: TextView = view.findViewById(R.id.text_buying_price)
-        private val textSellingPrice: TextView = view.findViewById(R.id.text_selling_price)
-        private val textBuyingPercentage: TextView = view.findViewById(R.id.text_buying_percentage)
-        private val textSellingPercentage: TextView = view.findViewById(R.id.text_selling_percentage)
+        private val textBuyingPrice: TextView = view.findViewById(R.id.tvBuyingPrice)
+        private val textSellingPrice: TextView = view.findViewById(R.id.tvSellingPrice)
+        private val textBuyingPercentage: TextView = view.findViewById(R.id.tvBuyingPercentage)
+        private val textSellingPercentage: TextView = view.findViewById(R.id.tvSellingPercentage)
 
 
-        fun bind(goldType: String,
-                 goldPrice: GoldPrice,
-                 dailyPercentage: DailyPercentage,
-                 colors: Array<String>,
-                 position: Int,
-                 listener: Listener){
+        fun bind(
+            goldType: String,
+            goldPrice: GoldPrice,
+            dailyPercentage: DailyPercentage,
+            colors: Array<String>,
+            position: Int,
+            listener: Listener
+        ) {
 
             textName.setTextColor(Color.BLACK)
             textBuyingPrice.setTextColor(Color.BLACK)
             textSellingPrice.setTextColor(Color.BLACK)
 
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 listener.onItemClick(goldType, goldPrice)
             }
             itemView.setBackgroundColor(Color.parseColor(colors[position % 2]))
@@ -67,25 +70,23 @@ class RecyclerViewAdapter(private val goldPricesMap: Map<String, GoldPrice>,
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RowHolder
-    {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RowHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.row_layout, parent, false)
         return RowHolder(view)
     }
 
-    override fun getItemCount(): Int
-    {
+    override fun getItemCount(): Int {
         return goldPricesMap.size
     }
 
-    override fun onBindViewHolder(holder: RowHolder, position: Int)
-    {
+    override fun onBindViewHolder(holder: RowHolder, position: Int) {
         holder.bind(
             goldPricesList[position].first,
             goldPricesList[position].second,
             dailyPercentagesList[position].second,
             colors,
             position,
-            listener)
+            listener
+        )
     }
 }

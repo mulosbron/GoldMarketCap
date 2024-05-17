@@ -10,7 +10,7 @@
         android:id="@+id/header"
         layout="@layout/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:paddingTop="16dp">
 
             <ImageView
-                android:id="@+id/imgLogo"
+                android:id="@+id/ivLogo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/xxxhdpi"
@@ -42,7 +42,7 @@
                 android:layout_marginBottom="8dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textColorHighlight="@color/black"
+                android:textColorHighlight="@android:color/darker_gray"
                 android:backgroundTint="@color/black"
                 android:autofillHints="" />
 
@@ -55,7 +55,7 @@
                 android:layout_margin="16dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textColorHighlight="@color/black"
+                android:textColorHighlight="@android:color/darker_gray"
                 android:backgroundTint="@color/black"
                 android:autofillHints="" />
 
@@ -68,7 +68,7 @@
                 android:layout_margin="16dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textColorHighlight="@color/black"
+                android:textColorHighlight="@android:color/darker_gray"
                 android:backgroundTint="@color/black"
                 android:autofillHints="" />
 
@@ -79,7 +79,7 @@
                 android:text="@string/signup"
                 android:backgroundTint="@color/black"
                 android:textColor="#FFC107"
-                android:layout_margin="16dp"/>
+                android:layout_margin="16dp" />
 
             <TextView
                 android:id="@+id/tvLogin"
@@ -89,8 +89,7 @@
                 android:layout_marginBottom="16dp"
                 android:textSize="16sp"
                 android:gravity="center_horizontal"
-                android:textColor="@color/black"/>
-
+                android:textColor="@color/black" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

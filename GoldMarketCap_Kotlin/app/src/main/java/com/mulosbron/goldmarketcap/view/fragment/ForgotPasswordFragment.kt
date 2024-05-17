@@ -9,14 +9,19 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mulosbron.goldmarketcap.R
-import com.mulosbron.goldmarketcap.view.APIService
+import com.mulosbron.goldmarketcap.service.ApiService
 
 class ForgotPasswordFragment : Fragment() {
 
     private lateinit var etEmailForReset: EditText
-    private lateinit var apiService: APIService
+    private lateinit var btnForgotPassword: Button
+    private lateinit var apiService: ApiService
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_forgot_password, container, false)
     }
 
@@ -24,10 +29,10 @@ class ForgotPasswordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         etEmailForReset = view.findViewById(R.id.etEmailForReset)
-        apiService = APIService(this)
+        btnForgotPassword = view.findViewById(R.id.btnForgotPassword)
+        apiService = ApiService(this)
 
-        val btnSendInstructions: Button = view.findViewById(R.id.btnSendInstructions)
-        btnSendInstructions.setOnClickListener {
+        btnForgotPassword.setOnClickListener {
             performForgotPassword()
         }
     }
@@ -36,7 +41,7 @@ class ForgotPasswordFragment : Fragment() {
         val email = etEmailForReset.text.toString().trim()
 
         if (email.isEmpty()) {
-            Toast.makeText(requireContext(), "Please enter your email address", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
 

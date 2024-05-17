@@ -11,16 +11,23 @@ import com.mulosbron.goldmarketcap.view.MainActivity
 
 class SettingsFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private lateinit var btnLogout: Button
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<Button>(R.id.btnLogout).apply {
-            setOnClickListener {
-                (activity as? MainActivity)?.logOutUser()
-            }
+
+        btnLogout = view.findViewById(R.id.btnLogout)
+
+        btnLogout.setOnClickListener {
+            (activity as? MainActivity)?.logOutUser()
         }
     }
 }

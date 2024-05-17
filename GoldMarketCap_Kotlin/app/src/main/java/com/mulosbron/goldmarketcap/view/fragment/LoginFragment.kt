@@ -9,16 +9,23 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.mulosbron.goldmarketcap.R
-import com.mulosbron.goldmarketcap.view.APIService
+import com.mulosbron.goldmarketcap.service.ApiService
 import com.mulosbron.goldmarketcap.view.MainActivity
 
 class LoginFragment : Fragment() {
 
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
-    private lateinit var apiService: APIService
+    private lateinit var tvForgotPassword: TextView
+    private lateinit var btnLogin: Button
+    private lateinit var tvRegister: TextView
+    private lateinit var apiService: ApiService
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
@@ -27,21 +34,19 @@ class LoginFragment : Fragment() {
 
         etEmail = view.findViewById(R.id.etEmail)
         etPassword = view.findViewById(R.id.etPassword)
-        apiService = APIService(this)
+        tvForgotPassword = view.findViewById(R.id.tvForgotPassword)
+        btnLogin = view.findViewById(R.id.btnLogin)
+        tvRegister = view.findViewById(R.id.tvRegister)
+        apiService = ApiService(this)
 
-        val tvRegister: TextView = view.findViewById(R.id.tvRegister)
-        tvRegister.setOnClickListener {
-            (activity as? MainActivity)?.replaceFragment(RegisterFragment())
-        }
-
-        val tvForgotPassword: TextView = view.findViewById(R.id.tvForgotPassword)
         tvForgotPassword.setOnClickListener {
             (activity as? MainActivity)?.replaceFragment(ForgotPasswordFragment())
         }
-
-        val btnLogin: Button = view.findViewById(R.id.btnLogIn)
         btnLogin.setOnClickListener {
             performLogin()
+        }
+        tvRegister.setOnClickListener {
+            (activity as? MainActivity)?.replaceFragment(RegisterFragment())
         }
     }
 

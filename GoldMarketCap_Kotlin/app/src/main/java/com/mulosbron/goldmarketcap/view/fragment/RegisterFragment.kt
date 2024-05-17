@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mulosbron.goldmarketcap.R
-import com.mulosbron.goldmarketcap.view.APIService
+import com.mulosbron.goldmarketcap.service.ApiService
 import com.mulosbron.goldmarketcap.view.MainActivity
 
 class RegisterFragment : Fragment() {
@@ -18,9 +18,15 @@ class RegisterFragment : Fragment() {
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
     private lateinit var etConfirmPassword: EditText
-    private lateinit var apiService: APIService
+    private lateinit var btnSignUp: Button
+    private lateinit var tvLogin: TextView
+    private lateinit var apiService: ApiService
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
@@ -29,15 +35,14 @@ class RegisterFragment : Fragment() {
 
         etEmail = view.findViewById(R.id.etEmail)
         etPassword = view.findViewById(R.id.etPassword)
-        etConfirmPassword= view.findViewById(R.id.etConfirmPassword)
-        apiService = APIService(this)
+        etConfirmPassword = view.findViewById(R.id.etConfirmPassword)
+        btnSignUp = view.findViewById(R.id.btnSignUp)
+        tvLogin = view.findViewById(R.id.tvLogin)
+        apiService = ApiService(this)
 
-        val btnSignup: Button = view.findViewById(R.id.btnSignUp)
-        btnSignup.setOnClickListener {
+        btnSignUp.setOnClickListener {
             performRegister()
         }
-
-        val tvLogin: TextView = view.findViewById(R.id.tvLogin)
         tvLogin.setOnClickListener {
             (activity as? MainActivity)?.replaceFragment(LoginFragment())
         }
@@ -49,7 +54,7 @@ class RegisterFragment : Fragment() {
         val confirmPassword = etConfirmPassword.text.toString().trim()
 
         if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(requireContext(), "Email and password fields cannot be left blank", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
 

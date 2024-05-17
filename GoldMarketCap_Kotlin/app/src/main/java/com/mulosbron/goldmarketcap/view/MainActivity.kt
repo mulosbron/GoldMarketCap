@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.mulosbron.goldmarketcap.R
 import com.mulosbron.goldmarketcap.databinding.ActivityMainBinding
-import com.mulosbron.goldmarketcap.view.fragment.*
-import org.json.JSONObject
+import com.mulosbron.goldmarketcap.view.fragment.LoginFragment
+import com.mulosbron.goldmarketcap.view.fragment.MarketFragment
+import com.mulosbron.goldmarketcap.view.fragment.PortfolioFragment
+import com.mulosbron.goldmarketcap.view.fragment.SettingsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,11 +23,12 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(MarketFragment())
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.navigation_markets -> {
                     replaceFragment(MarketFragment())
                     true
                 }
+
                 R.id.navigation_portfolio, R.id.navigation_settings -> {
                     if (checkUserLoggedIn()) {
                         replaceFragment(if (item.itemId == R.id.navigation_portfolio) PortfolioFragment() else SettingsFragment())
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
                 }
+
                 else -> false
             }
         }
