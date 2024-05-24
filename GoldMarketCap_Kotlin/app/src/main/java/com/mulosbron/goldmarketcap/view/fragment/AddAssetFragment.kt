@@ -23,6 +23,7 @@ class AddAssetFragment : Fragment() {
 
     private lateinit var rgBuySell: RadioGroup
     private lateinit var btnBuy: RadioButton
+    private lateinit var btnSell: RadioButton
     private lateinit var etAmount: EditText
     private lateinit var etPrice: EditText
     private lateinit var btnAddAsset: Button
@@ -41,6 +42,7 @@ class AddAssetFragment : Fragment() {
 
         rgBuySell = view.findViewById(R.id.rgBuySell)
         btnBuy = view.findViewById(R.id.rbBuy)
+        btnSell = view.findViewById(R.id.rbSell)
         etAmount = view.findViewById(R.id.etAmount)
         etPrice = view.findViewById(R.id.etPrice)
         btnAddAsset = view.findViewById(R.id.btnAddProduct)
@@ -48,7 +50,14 @@ class AddAssetFragment : Fragment() {
 
         val goldName = arguments?.getString("goldName")
 
+        updateButtonColors()
+
+        goldName?.let {
+            apiService.fetchGoldPrice(it, this::updatePrice)
+        }
+
         rgBuySell.setOnCheckedChangeListener { _, _ ->
+            updateButtonColors()
             goldName?.let {
                 apiService.fetchGoldPrice(it, this::updatePrice)
             }
@@ -61,6 +70,19 @@ class AddAssetFragment : Fragment() {
         }
     }
 
+    private fun updateButtonColors() {
+        if (btnBuy.isChecked) {
+            btnBuy.setBackgroundResource(R.drawable.selected_radiobutton_background)
+            btnBuy.setTextColor(resources.getColor(R.color.selected_color))
+            btnSell.setBackgroundResource(R.drawable.default_radiobutton_background)
+            btnSell.setTextColor(resources.getColor(R.color.black))
+        } else {
+            btnSell.setBackgroundResource(R.drawable.selected_radiobutton_background)
+            btnSell.setTextColor(resources.getColor(R.color.selected_color))
+            btnBuy.setBackgroundResource(R.drawable.default_radiobutton_background)
+            btnBuy.setTextColor(resources.getColor(R.color.black))
+        }
+    }
 
     private fun createAndSendTransaction(goldName: String) {
         val username = (activity as MainActivity?)?.getUsername()
@@ -91,5 +113,3 @@ class AddAssetFragment : Fragment() {
         }
     }
 }
-
-

@@ -1,46 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFC107"
     tools:context=".view.fragment.AddTransactionFragment">
-
-    <RelativeLayout
+    <include
+        android:id="@+id/header"
+        layout="@layout/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFC107"
-        tools:ignore="UselessParent">
-
-        <include
-            android:id="@+id/header"
-            layout="@layout/header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/etSearchGold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/header"
-            android:layout_margin="10dp"
-            android:hint="Ara"
-            android:inputType="text"
-            android:ems="10"
-            android:padding="10dp"
-            android:background="@android:drawable/editbox_background"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textColorHighlight="@android:color/darker_gray"
-            android:autofillHints="" />
-
-        <ListView
-            android:id="@+id/lvGoldItems"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etSearchGold"
-            android:dividerHeight="10dp"
-            android:divider="@android:color/transparent"
-            android:listSelector="@android:color/transparent" />
-    </RelativeLayout>
-
-</FrameLayout>
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/etSearchGold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:layout_margin="10dp"
+        android:hint="@string/search"
+        android:inputType="text"
+        android:ems="10"
+        android:padding="10dp"
+        android:background="@android:drawable/editbox_background"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textColorHighlight="@android:color/darker_gray"
+        android:autofillHints="" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGoldItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etSearchGold"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:listSelector="@android:color/transparent" />
+</RelativeLayout>

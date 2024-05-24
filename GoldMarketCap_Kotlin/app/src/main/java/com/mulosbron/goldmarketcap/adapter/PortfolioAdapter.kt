@@ -18,13 +18,13 @@ class PortfolioAdapter(
     private val colors: Array<String> = arrayOf("#FFD700", "#FFDF00")
 
     interface Listener {
-        fun onItemClick(goldType: String)
+        fun onItemClick(goldAsset: String)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvGoldName: TextView = view.findViewById(R.id.tvGoldName)
-        val tvAvgBuyPriceInt: TextView = view.findViewById(R.id.tvAvgBuyPrice)
-        val tvProfitLossInt: TextView = view.findViewById(R.id.tvProfitLoss)
+        private val tvGoldName: TextView = view.findViewById(R.id.tvGoldName)
+        private val tvAvgBuyPriceInt: TextView = view.findViewById(R.id.tvAvgBuyPrice)
+        private val tvProfitLossInt: TextView = view.findViewById(R.id.tvProfitLoss)
 
         fun bind(
             goldType: String,

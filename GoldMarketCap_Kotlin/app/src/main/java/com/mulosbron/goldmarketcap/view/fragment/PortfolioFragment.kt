@@ -68,7 +68,11 @@ class PortfolioFragment : Fragment(), PortfolioAdapter.Listener {
         compositeDisposable?.clear()
     }
 
-    override fun onItemClick(goldType: String) {
-        Toast.makeText(context, "Clicked: $goldType", Toast.LENGTH_LONG).show()
+    override fun onItemClick(goldAsset: String) {
+        val bundle = Bundle()
+        bundle.putString("goldAsset", goldAsset)
+        val transactionFragment = TransactionFragment()
+        transactionFragment.arguments = bundle
+        (activity as? MainActivity)?.replaceFragment(transactionFragment)
     }
 }

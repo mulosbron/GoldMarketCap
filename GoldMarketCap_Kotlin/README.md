@@ -10,9 +10,9 @@ GoldMarketCap, Kotlin dili kullanılarak geliştirilen bir Android uygulamasıd�
 - **`LoginFragment.kt`**: Kullanıcıların hesaplarına giriş yapmalarını sağlar.
 - **`SettingsFragment.kt`**: Kullanıcıların hesaplarından çıkış yapmalarını sağlar. İleri de başka özellikler içerecek.
 - **`ForgotPasswordFragment.kt ve ResetPasswordFragment.kt`**: Kullanıcıların hesaplarının şifrelerini değiştirmelerini sağlar. 
-- **`EmptyPorfolioFragment.kt`**: Boş portföy sayfası. Kullanıcıların işlem eklemesini sağlar.
-- **`PorfolioFragment.kt`**: Kullanıcın porföyüne eklediği assetleri gösterir. Kullanıcıların işlem eklemesini sağlar.
-- **`AddTransactionActivity.kt ve AddAssetActivity.kt`**: Kullanıcıların seçtiği bir altın türünü portföylerine eklemelerini sağlar.
+- **`PorfolioFragment.kt`**: Kullanıcın porföyüne eklediği varlıkları gösterir. İşlem eklemesini sağlar.
+- **`AddTransactionFragment.kt ve AddAssetFragment.kt`**: Kullanıcıların seçtiği bir varlığı portföylerine eklemelerini sağlar.
+- **`TransactionFragment.kt ve UpdateTransactionFragment.kt`**: Varlıklar üzerinde yapılan işlemleri gösterir ve işlemleri değiştirmeyi sağlar.
 
 ## Modeller
 
@@ -32,8 +32,27 @@ GoldMarketCap, Kotlin dili kullanılarak geliştirilen bir Android uygulamasıd�
 
 ## Adaptörler
 
-- **`RecyclerViewAdapter.kt`**: Altın piyasa verilerini listelemek için RecyclerView'a veri bağlamayı yöneten adaptör.
-- **`PortfolioAdapter.kt`**: Kullanıcı portföy verilerini listelemek için RecyclerView'a veri bağlamayı yöneten adaptör.
+- **`MarketAdapter.kt`**: Altın piyasa verilerini listelemek için RecyclerView'a veri bağlamayı yöneten adaptör.
+- **`PortfolioAdapter.kt`**: Portföydeki varlık verilerini listelemek için RecyclerView'a veri bağlamayı yöneten adaptör.
+- **`TransactionAdapter.kt`**: Varlıklara ait işlemleri yönetmek için RecyclerView'a veri bağlamayı yöneten adaptör.
+- **`PortfolioAdapter.kt`**: Portföye eklenebilir varlıkları listelemek için RecyclerView'a veri bağlamayı yöneten adaptör.
+
+
+## Layoutlar [2024/05/24]
+
+- **`fragment_transaction.xml`**: Varlıklar üzerinde yapılan işlemlerleri görmek için kullanılan layout.
+![transaction](https://2mmi4vhbphlzl2k4nc5bozfxsycld2ajdjzzdeixarjex4gc26fa.arweave.net/0xiOVOF515XpXGi6F2S3lgSx6Akac5GRFwRSS_DC14o)
+
+- **`fragment_add_transaction.xml`**: Kullanıcının portföyüne ekleyebileceği varlıkları göstermesi için kullanılan layout.
+![add_transaction](https://sdnwc7k2add4doztxvh7xzwqug2vjrgvnvoslzzus4ohpa2gkyta.arweave.net/kNthfVoAx8G7M71P--bQobVUxNVtXSXnNJccd4NGViY)
+
+- **`fragment_update_transaction.xml`**: Yapılan bir işlemi değiştirmek için kullanılan layout. 
+![update_transaction](https://lh2ztij4zocsz5k2dvfnydbnarysvkr2faccblfgsysqzxf44lfa.arweave.net/WfWZoTzLhSz1Wh1K3AwtBHEqqjooBCCsppYlDNy84so)
+
+- **`fragment_add_asset.xml`**: Kullanıcının portföyüne işlem eklemesi için kullanılan layout.
+![add_asset](https://ghzx7iprbeivi7f6746qwygpznvzoqozd7jshc6lsxizyrktqoha.arweave.net/MfN_ofEJEVR8vv89C2DPy2uXQdkf0yOLy5XRnEVTg44)
+
+-----------------------------------------------------------------------------------------
 
 ## Layoutlar [2024/05/17]
 

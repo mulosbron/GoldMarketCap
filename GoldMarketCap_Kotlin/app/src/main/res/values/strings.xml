@@ -20,9 +20,20 @@
     <string name="login_prompt">Üyeliğiniz var mı? Giriş yapın</string>
     <string name="buy">Al</string>
     <string name="sell">Sat</string>
-    <string name="quantity">Miktar</string>
+    <string name="amount">Miktar</string>
+    <string name="date">Tarih</string>
+    <string name="avg_buy_price">Ort. Alış Fiyatı</string>
+    <string name="buying_price">Alış Fiyatı</string>
+    <string name="selling_price">Satış Fiyatı</string>
+    <string name="profit">Kar/Zarar</string>
     <string name="price">Fiyat</string>
     <string name="add_txn">Ekle</string>
+    <string name="delete_txn">İşlemi Sil</string>
+    <string name="update_transaction">İşlemi Güncelle</string>
+    <string name="delete_gold_asset">Varlığı Sil</string>
+    <string name="total_value_label">Toplam Değer :</string>
+    <string name="total_value">0</string>
+    <string name="search">Ara</string>
 </resources>
 
 

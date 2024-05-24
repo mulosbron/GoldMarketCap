@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragment.AddAssetFragment"
+    tools:context=".view.fragment.UpdateTransactionFragment"
     android:background="#FFC107">
     <include
         android:id="@+id/header"
@@ -15,19 +15,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
     <RadioGroup
-        android:id="@+id/rgBuySell"
+        android:id="@+id/rgUpdateBuySell"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toBottomOf="@+id/header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp">
         <RadioButton
-            android:id="@+id/rbBuy"
+            android:id="@+id/rbUpdateBuy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -35,15 +35,12 @@
             android:button="@null"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textColorHighlight="@color/black"
-            android:background="@drawable/selected_radiobutton_background"
-            android:checked="true"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp" />
+            android:paddingVertical="8dp"
+            android:background="@drawable/selected_radiobutton_background"
+            android:checked="true" />
         <RadioButton
-            android:id="@+id/rbSell"
+            android:id="@+id/rbUpdateSell"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -51,20 +48,17 @@
             android:button="@null"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textColorHighlight="@color/black"
-            android:background="@drawable/default_radiobutton_background"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp" />
+            android:paddingVertical="8dp"
+            android:background="@drawable/default_radiobutton_background" />
     </RadioGroup>
     <EditText
-        android:id="@+id/etAmount"
+        android:id="@+id/etUpdateDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/amount"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/rgBuySell"
+        android:hint="@string/date"
+        android:inputType="date"
+        app:layout_constraintTop_toBottomOf="@id/rgUpdateBuySell"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
@@ -76,12 +70,29 @@
         android:backgroundTint="@color/black"
         android:autofillHints="" />
     <EditText
-        android:id="@+id/etPrice"
+        android:id="@+id/etUpdateAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/amount"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@+id/etUpdateDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textColorHighlight="@android:color/darker_gray"
+        android:backgroundTint="@color/black"
+        android:autofillHints="" />
+    <EditText
+        android:id="@+id/etUpdatePrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/price"
         android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/etAmount"
+        app:layout_constraintTop_toBottomOf="@+id/etUpdateAmount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
@@ -93,12 +104,12 @@
         android:backgroundTint="@color/black"
         android:autofillHints="" />
     <Button
-        android:id="@+id/btnAddProduct"
+        android:id="@+id/btnUpdateTransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:text="@string/update_transaction"
         android:backgroundTint="@color/black"
         android:textColor="#FFC107"
-        android:text="@string/add_txn"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,13 @@ data class Transaction(
     val price: Double
 )
 
+data class TransactionUpdateModel(
+    val date: String?,
+    val transactionType: String?,
+    val amount: Double?,
+    val price: Double?
+)
+
 data class TransactionResponse(
     val message: String
 )

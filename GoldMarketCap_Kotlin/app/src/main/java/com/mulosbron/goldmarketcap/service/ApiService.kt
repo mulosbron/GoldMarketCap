@@ -1,9 +1,7 @@
 package com.mulosbron.goldmarketcap.service
 
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.mulosbron.goldmarketcap.R
 import com.mulosbron.goldmarketcap.model.AuthRequest
 import com.mulosbron.goldmarketcap.model.AuthResponse
 import com.mulosbron.goldmarketcap.model.DailyPercentage
@@ -14,10 +12,11 @@ import com.mulosbron.goldmarketcap.model.ResetPasswordRequest
 import com.mulosbron.goldmarketcap.model.ResetPasswordResponse
 import com.mulosbron.goldmarketcap.model.Transaction
 import com.mulosbron.goldmarketcap.model.TransactionResponse
+import com.mulosbron.goldmarketcap.model.TransactionUpdateModel
 import com.mulosbron.goldmarketcap.view.MainActivity
-import com.mulosbron.goldmarketcap.view.fragment.EmptyPortfolioFragment
 import com.mulosbron.goldmarketcap.view.fragment.PortfolioFragment
 import com.mulosbron.goldmarketcap.view.fragment.ResetPasswordFragment
+import com.mulosbron.goldmarketcap.view.fragment.TransactionFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -89,7 +88,7 @@ class ApiService(private val context: Fragment) {
                         "Login successful: ${response.body()!!.message.split(" ").last()}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    (context.activity as? MainActivity)?.replaceFragment(EmptyPortfolioFragment())
+                    (context.activity as? MainActivity)?.replaceFragment(PortfolioFragment())
                 } else {
                     Toast.makeText(
                         context.requireContext(),
@@ -256,7 +255,7 @@ class ApiService(private val context: Fragment) {
 
     fun fetchGoldAssets(
         compositeDisposable: CompositeDisposable,
-        callback: (ArrayAdapter<String>) -> Unit
+        callback: (List<String>) -> Unit
     ) {
         val goldPricesAPI = getRetrofit().create(GoldPricesAPI::class.java)
         compositeDisposable.add(
@@ -266,12 +265,7 @@ class ApiService(private val context: Fragment) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ goldPrices ->
                     val goldNames = goldPrices.keys.toList()
-                    val adapter = ArrayAdapter(
-                        context.requireContext(),
-                        R.layout.textview_black_text,
-                        goldNames
-                    )
-                    callback(adapter)
+                    callback(goldNames)
                 }, { error ->
                     Toast.makeText(
                         context.requireContext(),
@@ -282,7 +276,7 @@ class ApiService(private val context: Fragment) {
         )
     }
 
-    fun searchGoldItems(query: String, callback: (ArrayAdapter<String>) -> Unit) {
+    fun searchGoldItems(query: String, callback: (List<String>) -> Unit) {
         val queryAPI = getRetrofit().create(QueryAPI::class.java)
         if (query.isNotEmpty()) {
             queryAPI.searchGoldPriceNames(query).enqueue(object : Callback<List<String>> {
@@ -292,12 +286,7 @@ class ApiService(private val context: Fragment) {
                 ) {
                     if (response.isSuccessful) {
                         val goldNames = response.body() ?: emptyList()
-                        val adapter = ArrayAdapter(
-                            context.requireContext(),
-                            android.R.layout.simple_list_item_1,
-                            goldNames
-                        )
-                        callback(adapter)
+                        callback(goldNames)
                     } else {
                         Toast.makeText(
                             context.requireContext(),
@@ -317,6 +306,7 @@ class ApiService(private val context: Fragment) {
             })
         }
     }
+
 
     fun fetchGoldPrice(productName: String, updatePrice: (GoldPrice) -> Unit) {
         val goldPricesAPI = getRetrofit().create(GoldPricesAPI::class.java)
@@ -428,6 +418,117 @@ class ApiService(private val context: Fragment) {
             totalValue += totalAmount * currentPrice
         }
         return totalValue
+    }
+
+    fun deleteGoldType(goldType: String, callback: () -> Unit) {
+        val portfolioAPI = getRetrofit().create(PortfolioAPI::class.java)
+        val username = (context.activity as? MainActivity)?.getUsername() ?: return
+        portfolioAPI.deleteGoldType(username, goldType)
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        callback()
+                    } else {
+                        Toast.makeText(
+                            context.requireContext(),
+                            "Failed to delete GoldType: ${response.errorBody()?.string()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(
+                        context.requireContext(),
+                        "Network error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    fun deleteTransaction(goldType: String, transactionId: String, callback: () -> Unit) {
+        val portfolioAPI = getRetrofit().create(PortfolioAPI::class.java)
+        val username = (context.activity as? MainActivity)?.getUsername() ?: return
+        portfolioAPI.deleteTransaction(username, goldType, transactionId)
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        callback()
+                    } else {
+                        Toast.makeText(
+                            context.requireContext(),
+                            "Failed to delete transaction: ${response.errorBody()?.string()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(
+                        context.requireContext(),
+                        "Network error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    fun getTransaction(transactionId: String, callback: (Transaction?) -> Unit) {
+        val portfolioAPI = getRetrofit().create(PortfolioAPI::class.java)
+        val username = (context.activity as? MainActivity)?.getUsername() ?: return
+        portfolioAPI.getTransaction(username, transactionId)
+            .enqueue(object : Callback<Transaction> {
+                override fun onResponse(call: Call<Transaction>, response: Response<Transaction>) {
+                    if (response.isSuccessful) {
+                        callback(response.body())
+                    } else {
+                        Toast.makeText(
+                            context.requireContext(),
+                            "Failed to fetch transaction: ${response.errorBody()?.string()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        callback(null)
+                    }
+                }
+
+                override fun onFailure(call: Call<Transaction>, t: Throwable) {
+                    Toast.makeText(
+                        context.requireContext(),
+                        "Network error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    callback(null)
+                }
+            })
+    }
+
+    fun updateTransaction(transactionId: String, updateModel: TransactionUpdateModel, callback: () -> Unit) {
+        val portfolioAPI = getRetrofit().create(PortfolioAPI::class.java)
+        val username = (context.activity as? MainActivity)?.getUsername() ?: return
+        portfolioAPI.updateTransaction(username, transactionId, updateModel)
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        (context.activity as MainActivity).replaceFragment(PortfolioFragment())
+                        callback()
+                    } else {
+                        Toast.makeText(
+                            context.requireContext(),
+                            "Failed to update transaction: ${response.errorBody()?.string()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(
+                        context.requireContext(),
+                        "Network error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 }
 

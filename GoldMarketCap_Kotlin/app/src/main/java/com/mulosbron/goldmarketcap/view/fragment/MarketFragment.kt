@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mulosbron.goldmarketcap.R
-import com.mulosbron.goldmarketcap.adapter.RecyclerViewAdapter
+import com.mulosbron.goldmarketcap.adapter.MarketAdapter
 import com.mulosbron.goldmarketcap.model.DailyPercentage
 import com.mulosbron.goldmarketcap.model.GoldPrice
 import com.mulosbron.goldmarketcap.service.ApiService
 import io.reactivex.disposables.CompositeDisposable
 
-class MarketFragment : Fragment(), RecyclerViewAdapter.Listener {
+class MarketFragment : Fragment(), MarketAdapter.Listener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var apiService: ApiService
@@ -69,7 +69,7 @@ class MarketFragment : Fragment(), RecyclerViewAdapter.Listener {
 
     private fun setAdapter() {
         if (goldPrices.isNotEmpty() && dailyPercentages.isNotEmpty()) {
-            recyclerView.adapter = RecyclerViewAdapter(goldPrices, dailyPercentages, this)
+            recyclerView.adapter = MarketAdapter(goldPrices, dailyPercentages, this)
         }
     }
 }

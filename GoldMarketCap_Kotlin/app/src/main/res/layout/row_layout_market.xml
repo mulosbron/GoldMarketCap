@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_marginBottom="2dp">
     <TextView
-        android:id="@+id/tvGoldName"
+        android:id="@+id/text_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -13,7 +13,6 @@
         android:layout_margin="10dp"
         android:layout_marginStart="10dp"
         android:textSize="20sp"
-        android:textColor="@android:color/black"
         android:textStyle="bold" />
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,23 +26,40 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tvLabelAvgBuyPrice"
+                android:id="@+id/tvLabelBuyingPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/avg_buy_price"
                 android:layout_marginBottom="5dp"
+                android:text="@string/buying_price"
                 android:textStyle="italic"
+                android:textSize="20sp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textColorHighlight="@color/black"
                 android:backgroundTint="@color/black" />
             <TextView
-                android:id="@+id/tvAvgBuyPrice"
+                android:id="@+id/tvBuyingPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:textColor="@android:color/black" />
+                android:layout_marginBottom="5dp" />
+            <TextView
+                android:id="@+id/tvLabelSellingPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/selling_price"
+                android:textStyle="italic"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textColorHighlight="@color/black"
+                android:backgroundTint="@color/black" />
+            <TextView
+                android:id="@+id/tvSellingPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -51,23 +67,26 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tvLabelProfitLoss"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="@string/profit"
-                android:layout_marginBottom="5dp"
-                android:textStyle="italic"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textColorHighlight="@color/black"
-                android:backgroundTint="@color/black" />
+                android:layout_marginBottom="5dp" />
             <TextView
-                android:id="@+id/tvProfitLoss"
+                android:id="@+id/tvBuyingPercentage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:textColor="@android:color/black" />
+                android:layout_marginBottom="5dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginBottom="5dp" />
+            <TextView
+                android:id="@+id/tvSellingPercentage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

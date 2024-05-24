@@ -5,13 +5,11 @@
     android:layout_height="match_parent"
     android:background="#FFC107"
     tools:context=".view.fragment.SettingsFragment">
-
     <include
         android:id="@+id/header"
         layout="@layout/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
@@ -21,5 +19,4 @@
         android:padding="16dp"
         android:text="@string/logout"
         android:textColor="#FFC107" />
-
 </FrameLayout>
