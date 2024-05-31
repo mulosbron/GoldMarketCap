@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mulosbron.goldmarketcap.R
 import com.mulosbron.goldmarketcap.model.DailyPercentage
-import com.mulosbron.goldmarketcap.model.GoldPrice
+import com.mulosbron.goldmarketcap.model.DailyGoldPrice
 
 class MarketAdapter(
-    private val goldPricesMap: Map<String, GoldPrice>,
+    private val goldPricesMap: Map<String, DailyGoldPrice>,
     private val dailyPercentagesMap: Map<String, DailyPercentage>,
     private val listener: Listener
 ) : RecyclerView.Adapter<MarketAdapter.RowHolder>() {
@@ -21,7 +21,7 @@ class MarketAdapter(
     private val dailyPercentagesList = dailyPercentagesMap.toList()
 
     interface Listener {
-        fun onItemClick(goldType: String, goldPrice: GoldPrice)
+        fun onItemClick(goldType: String, goldPrice: DailyGoldPrice)
     }
 
     class RowHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -35,7 +35,7 @@ class MarketAdapter(
 
         fun bind(
             goldType: String,
-            goldPrice: GoldPrice,
+            goldPrice: DailyGoldPrice,
             dailyPercentage: DailyPercentage,
             colors: Array<String>,
             position: Int,

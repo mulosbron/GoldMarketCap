@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.mulosbron.goldmarketcap.R
 import com.mulosbron.goldmarketcap.adapter.TransactionAdapter
+import com.mulosbron.goldmarketcap.databinding.FragmentTransactionBinding
 import com.mulosbron.goldmarketcap.service.ApiService
 import com.mulosbron.goldmarketcap.view.MainActivity
 import io.reactivex.disposables.CompositeDisposable
 
 class TransactionFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
+    private var _binding: FragmentTransactionBinding? = null
+    private val binding get() = _binding!!
     private lateinit var apiService: ApiService
     private var compositeDisposable: CompositeDisposable? = null
     private lateinit var adapter: TransactionAdapter
@@ -27,16 +26,17 @@ class TransactionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_transaction, container, false)
+        _binding = FragmentTransactionBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.rvTransactions)
-        recyclerView.layoutManager = LinearLayoutManager(context)
         apiService = ApiService(this)
         compositeDisposable = CompositeDisposable()
+
+        binding.rvTransactions.layoutManager = LinearLayoutManager(context)
 
         val goldAsset = arguments?.getString("goldAsset")
         if (goldAsset != null) {
@@ -57,11 +57,11 @@ class TransactionFragment : Fragment() {
                     }
                     (activity as? MainActivity)?.replaceFragment(updateFragment)
                 })
-                recyclerView.adapter = adapter
+                binding.rvTransactions.adapter = adapter
             }
         }
 
-        view.findViewById<Button>(R.id.btnDeleteGoldAsset).setOnClickListener {
+        binding.btnDeleteGoldAsset.setOnClickListener {
             if (goldAsset != null) {
                 apiService.deleteGoldType(goldAsset) {
                     Toast.makeText(context, "Gold asset deleted", Toast.LENGTH_SHORT).show()
@@ -78,8 +78,9 @@ class TransactionFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         compositeDisposable?.clear()
+        _binding = null
     }
 }

@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mulosbron.goldmarketcap.R
-import com.mulosbron.goldmarketcap.model.GoldPrice
+import com.mulosbron.goldmarketcap.databinding.FragmentAddAssetBinding
+import com.mulosbron.goldmarketcap.model.DailyGoldPrice
 import com.mulosbron.goldmarketcap.model.Transaction
 import com.mulosbron.goldmarketcap.service.ApiService
 import com.mulosbron.goldmarketcap.view.MainActivity
@@ -21,31 +19,22 @@ import java.util.Locale
 
 class AddAssetFragment : Fragment() {
 
-    private lateinit var rgBuySell: RadioGroup
-    private lateinit var btnBuy: RadioButton
-    private lateinit var btnSell: RadioButton
-    private lateinit var etAmount: EditText
-    private lateinit var etPrice: EditText
-    private lateinit var btnAddAsset: Button
+    private var _binding: FragmentAddAssetBinding? = null
+    private val binding get() = _binding!!
     private lateinit var apiService: ApiService
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_add_asset, container, false)
+    ): View {
+        _binding = FragmentAddAssetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rgBuySell = view.findViewById(R.id.rgBuySell)
-        btnBuy = view.findViewById(R.id.rbBuy)
-        btnSell = view.findViewById(R.id.rbSell)
-        etAmount = view.findViewById(R.id.etAmount)
-        etPrice = view.findViewById(R.id.etPrice)
-        btnAddAsset = view.findViewById(R.id.btnAddProduct)
         apiService = ApiService(this)
 
         val goldName = arguments?.getString("goldName")
@@ -56,49 +45,62 @@ class AddAssetFragment : Fragment() {
             apiService.fetchGoldPrice(it, this::updatePrice)
         }
 
-        rgBuySell.setOnCheckedChangeListener { _, _ ->
+        binding.rgBuySell.setOnCheckedChangeListener { _, _ ->
             updateButtonColors()
             goldName?.let {
                 apiService.fetchGoldPrice(it, this::updatePrice)
             }
         }
 
-        btnAddAsset.setOnClickListener {
+        binding.btnAddProduct.setOnClickListener {
             goldName?.let {
                 createAndSendTransaction(it)
             }
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun updateButtonColors() {
-        if (btnBuy.isChecked) {
-            btnBuy.setBackgroundResource(R.drawable.selected_radiobutton_background)
-            btnBuy.setTextColor(resources.getColor(R.color.selected_color))
-            btnSell.setBackgroundResource(R.drawable.default_radiobutton_background)
-            btnSell.setTextColor(resources.getColor(R.color.black))
+        if (binding.rbBuy.isChecked) {
+            setButtonStyle(binding.rbBuy, R.drawable.selected_radiobutton_background, R.color.selected_color)
+            setButtonStyle(binding.rbSell, R.drawable.default_radiobutton_background, R.color.black)
         } else {
-            btnSell.setBackgroundResource(R.drawable.selected_radiobutton_background)
-            btnSell.setTextColor(resources.getColor(R.color.selected_color))
-            btnBuy.setBackgroundResource(R.drawable.default_radiobutton_background)
-            btnBuy.setTextColor(resources.getColor(R.color.black))
+            setButtonStyle(binding.rbSell, R.drawable.selected_radiobutton_background, R.color.selected_color)
+            setButtonStyle(binding.rbBuy, R.drawable.default_radiobutton_background, R.color.black)
         }
+    }
+
+    private fun setButtonStyle(button: RadioButton, backgroundRes: Int, textColorRes: Int) {
+        button.setBackgroundResource(backgroundRes)
+        button.setTextColor(resources.getColor(textColorRes, null))
     }
 
     private fun createAndSendTransaction(goldName: String) {
         val username = (activity as MainActivity?)?.getUsername()
         if (username != null) {
             try {
-                val transaction = Transaction(
-                    id = "",
-                    date = SimpleDateFormat(
-                        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                        Locale.getDefault()
-                    ).format(Date()),
-                    transactionType = if (btnBuy.isChecked) "buy" else "sell",
-                    amount = etAmount.text.toString().toDouble(),
-                    price = etPrice.text.toString().toDouble()
-                )
-                apiService.sendTransaction(username, goldName, transaction)
+                val amount = binding.etAmount.text.toString().toDoubleOrNull()
+                val price = binding.etPrice.text.toString().toDoubleOrNull()
+
+                if (amount != null && price != null) {
+                    val transaction = Transaction(
+                        id = "",
+                        date = SimpleDateFormat(
+                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                            Locale.getDefault()
+                        ).format(Date()),
+                        transactionType = if (binding.rbBuy.isChecked) "buy" else "sell",
+                        amount = amount,
+                        price = price
+                    )
+                    apiService.sendTransaction(username, goldName, transaction)
+                } else {
+                    Toast.makeText(context, "Please enter valid numbers", Toast.LENGTH_SHORT).show()
+                }
             } catch (e: NumberFormatException) {
                 Toast.makeText(context, "Please enter valid numbers", Toast.LENGTH_SHORT).show()
             }
@@ -107,9 +109,13 @@ class AddAssetFragment : Fragment() {
         }
     }
 
-    private fun updatePrice(goldPrice: GoldPrice) {
-        etPrice.post {
-            etPrice.setText(if (btnBuy.isChecked) goldPrice.buyingPrice.toString() else goldPrice.sellingPrice.toString())
+    private fun updatePrice(goldPrice: DailyGoldPrice?) {
+        goldPrice?.let {
+            activity?.runOnUiThread {
+                binding.etPrice.setText(
+                    if (binding.rbBuy.isChecked) it.buyingPrice.toString() else it.sellingPrice.toString()
+                )
+            }
         }
     }
 }

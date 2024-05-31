@@ -4,47 +4,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.mulosbron.goldmarketcap.R
+import com.mulosbron.goldmarketcap.databinding.FragmentResetPasswordBinding
 import com.mulosbron.goldmarketcap.service.ApiService
 
 class ResetPasswordFragment : Fragment() {
 
-    private lateinit var etToken: EditText
-    private lateinit var etNewPassword: EditText
-    private lateinit var etConfirmNewPassword: EditText
-    private lateinit var btnResetPassword: Button
+    private var _binding: FragmentResetPasswordBinding? = null
+    private val binding get() = _binding!!
     private lateinit var apiService: ApiService
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_reset_password, container, false)
+    ): View {
+        _binding = FragmentResetPasswordBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        etToken = view.findViewById(R.id.etToken)
-        etNewPassword = view.findViewById(R.id.etNewPassword)
-        etConfirmNewPassword = view.findViewById(R.id.etConfirmNewPassword)
-        btnResetPassword = view.findViewById(R.id.btnResetPassword)
         apiService = ApiService(this)
 
-        btnResetPassword.setOnClickListener {
+        binding.btnResetPassword.setOnClickListener {
             performResetPassword()
         }
     }
 
     private fun performResetPassword() {
-        val token = etToken.text.toString().trim()
-        val newPassword = etNewPassword.text.toString().trim()
-        val confirmNewPassword = etConfirmNewPassword.text.toString().trim()
+        val token = binding.etToken.text.toString().trim()
+        val newPassword = binding.etNewPassword.text.toString().trim()
+        val confirmNewPassword = binding.etConfirmNewPassword.text.toString().trim()
 
         if (token.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
             Toast.makeText(requireContext(), "Fill in all fields", Toast.LENGTH_SHORT).show()

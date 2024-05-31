@@ -4,29 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mulosbron.goldmarketcap.R
+import com.mulosbron.goldmarketcap.databinding.FragmentUpdateTransactionBinding
 import com.mulosbron.goldmarketcap.model.Transaction
 import com.mulosbron.goldmarketcap.model.TransactionUpdateModel
 import com.mulosbron.goldmarketcap.service.ApiService
-import com.mulosbron.goldmarketcap.view.MainActivity
 
 class UpdateTransactionFragment : Fragment() {
 
+    private var _binding: FragmentUpdateTransactionBinding? = null
+    private val binding get() = _binding!!
     private lateinit var apiService: ApiService
-    private lateinit var etUpdateDate: EditText
-    private lateinit var rgUpdateTransactionType: RadioGroup
-    private lateinit var rbUpdateBuy: RadioButton
-    private lateinit var rbUpdateSell: RadioButton
-    private lateinit var etUpdateAmount: EditText
-    private lateinit var etUpdatePrice: EditText
-    private lateinit var btnUpdate: Button
-
     private var transactionId: String? = null
     private var goldType: String? = null
 
@@ -34,22 +25,15 @@ class UpdateTransactionFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_update_transaction, container, false)
+    ): View? {
+        _binding = FragmentUpdateTransactionBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         apiService = ApiService(this)
-
-        etUpdateDate = view.findViewById(R.id.etUpdateDate)
-        rgUpdateTransactionType = view.findViewById(R.id.rgUpdateBuySell)
-        rbUpdateBuy = view.findViewById(R.id.rbUpdateBuy)
-        rbUpdateSell = view.findViewById(R.id.rbUpdateSell)
-        etUpdateAmount = view.findViewById(R.id.etUpdateAmount)
-        etUpdatePrice = view.findViewById(R.id.etUpdatePrice)
-        btnUpdate = view.findViewById(R.id.btnUpdateTransaction)
 
         transactionId = arguments?.getString("transactionId")
         goldType = arguments?.getString("goldType")
@@ -62,24 +46,24 @@ class UpdateTransactionFragment : Fragment() {
             }
         }
 
-        rgUpdateTransactionType.setOnCheckedChangeListener { _, _ ->
+        binding.rgUpdateBuySell.setOnCheckedChangeListener { _, _ ->
             updateButtonColors()
         }
 
         updateButtonColors()
 
-        btnUpdate.setOnClickListener {
-            val transactionType = when (rgUpdateTransactionType.checkedRadioButtonId) {
+        binding.btnUpdateTransaction.setOnClickListener {
+            val transactionType = when (binding.rgUpdateBuySell.checkedRadioButtonId) {
                 R.id.rbUpdateBuy -> "buy"
                 R.id.rbUpdateSell -> "sell"
                 else -> null
             }
 
             val updatedTransaction = TransactionUpdateModel(
-                date = etUpdateDate.text.toString().takeIf { it.isNotBlank() },
+                date = binding.etUpdateDate.text.toString().takeIf { it.isNotBlank() },
                 transactionType = transactionType,
-                amount = etUpdateAmount.text.toString().toDoubleOrNull(),
-                price = etUpdatePrice.text.toString().toDoubleOrNull()
+                amount = binding.etUpdateAmount.text.toString().toDoubleOrNull(),
+                price = binding.etUpdatePrice.text.toString().toDoubleOrNull()
             )
 
             transactionId?.let { id ->
@@ -93,27 +77,33 @@ class UpdateTransactionFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun updateButtonColors() {
-        if (rbUpdateBuy.isChecked) {
-            rbUpdateBuy.setBackgroundResource(R.drawable.selected_radiobutton_background)
-            rbUpdateBuy.setTextColor(resources.getColor(R.color.selected_color))
-            rbUpdateSell.setBackgroundResource(R.drawable.default_radiobutton_background)
-            rbUpdateSell.setTextColor(resources.getColor(R.color.black))
+        if (binding.rbUpdateBuy.isChecked) {
+            setButtonStyle(binding.rbUpdateBuy, R.drawable.selected_radiobutton_background, R.color.selected_color)
+            setButtonStyle(binding.rbUpdateSell, R.drawable.default_radiobutton_background, R.color.black)
         } else {
-            rbUpdateSell.setBackgroundResource(R.drawable.selected_radiobutton_background)
-            rbUpdateSell.setTextColor(resources.getColor(R.color.selected_color))
-            rbUpdateBuy.setBackgroundResource(R.drawable.default_radiobutton_background)
-            rbUpdateBuy.setTextColor(resources.getColor(R.color.black))
+            setButtonStyle(binding.rbUpdateSell, R.drawable.selected_radiobutton_background, R.color.selected_color)
+            setButtonStyle(binding.rbUpdateBuy, R.drawable.default_radiobutton_background, R.color.black)
         }
     }
 
+    private fun setButtonStyle(button: RadioButton, backgroundRes: Int, textColorRes: Int) {
+        button.setBackgroundResource(backgroundRes)
+        button.setTextColor(resources.getColor(textColorRes, null))
+    }
+
     private fun populateFields(transaction: Transaction) {
-        etUpdateDate.setText(transaction.date)
+        binding.etUpdateDate.setText(transaction.date)
         when (transaction.transactionType) {
-            "buy" -> rgUpdateTransactionType.check(R.id.rbUpdateBuy)
-            "sell" -> rgUpdateTransactionType.check(R.id.rbUpdateSell)
+            "buy" -> binding.rgUpdateBuySell.check(R.id.rbUpdateBuy)
+            "sell" -> binding.rgUpdateBuySell.check(R.id.rbUpdateSell)
         }
-        etUpdateAmount.setText(transaction.amount.toString())
-        etUpdatePrice.setText(transaction.price.toString())
+        binding.etUpdateAmount.setText(transaction.amount.toString())
+        binding.etUpdatePrice.setText(transaction.price.toString())
     }
 }

@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.mulosbron.goldmarketcap.R
 import com.mulosbron.goldmarketcap.adapter.MarketAdapter
+import com.mulosbron.goldmarketcap.databinding.FragmentMarketBinding
 import com.mulosbron.goldmarketcap.model.DailyPercentage
-import com.mulosbron.goldmarketcap.model.GoldPrice
+import com.mulosbron.goldmarketcap.model.DailyGoldPrice
 import com.mulosbron.goldmarketcap.service.ApiService
 import io.reactivex.disposables.CompositeDisposable
 
 class MarketFragment : Fragment(), MarketAdapter.Listener {
 
-    private lateinit var recyclerView: RecyclerView
+    private var _binding: FragmentMarketBinding? = null
+    private val binding get() = _binding!!
     private lateinit var apiService: ApiService
-    private var goldPrices: Map<String, GoldPrice> = emptyMap()
+    private var goldPrices: Map<String, DailyGoldPrice> = emptyMap()
     private var dailyPercentages: Map<String, DailyPercentage> = emptyMap()
     private var compositeDisposable: CompositeDisposable? = null
 
@@ -27,28 +27,29 @@ class MarketFragment : Fragment(), MarketAdapter.Listener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_market, container, false)
+    ): View {
+        _binding =  FragmentMarketBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.rvMarket)
-        recyclerView.layoutManager = LinearLayoutManager(context)
         apiService = ApiService(this)
         compositeDisposable = CompositeDisposable()
+
+        binding.rvMarket.layoutManager = LinearLayoutManager(context)
 
         fetchMarketData()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
         compositeDisposable?.clear()
+        _binding = null
     }
 
-    override fun onItemClick(goldType: String, goldPrice: GoldPrice) {
+    override fun onItemClick(goldType: String, goldPrice: DailyGoldPrice) {
         Toast.makeText(
             requireContext(), "Clicked: $goldType - Buying: ${goldPrice.buyingPrice}, " +
                     "Selling: ${goldPrice.sellingPrice}", Toast.LENGTH_LONG
@@ -69,7 +70,7 @@ class MarketFragment : Fragment(), MarketAdapter.Listener {
 
     private fun setAdapter() {
         if (goldPrices.isNotEmpty() && dailyPercentages.isNotEmpty()) {
-            recyclerView.adapter = MarketAdapter(goldPrices, dailyPercentages, this)
+            binding.rvMarket.adapter = MarketAdapter(goldPrices, dailyPercentages, this)
         }
     }
 }

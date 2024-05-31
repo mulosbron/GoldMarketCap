@@ -4,29 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.mulosbron.goldmarketcap.R
+import com.mulosbron.goldmarketcap.databinding.FragmentSettingsBinding
 import com.mulosbron.goldmarketcap.view.MainActivity
 
 class SettingsFragment : Fragment() {
 
-    private lateinit var btnLogout: Button
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnLogout = view.findViewById(R.id.btnLogout)
-
-        btnLogout.setOnClickListener {
+        binding.btnLogout.setOnClickListener {
             (activity as? MainActivity)?.logOutUser()
         }
     }

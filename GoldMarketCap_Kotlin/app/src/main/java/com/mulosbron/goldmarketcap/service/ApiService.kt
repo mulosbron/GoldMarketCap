@@ -7,7 +7,7 @@ import com.mulosbron.goldmarketcap.model.AuthResponse
 import com.mulosbron.goldmarketcap.model.DailyPercentage
 import com.mulosbron.goldmarketcap.model.ForgotPasswordRequest
 import com.mulosbron.goldmarketcap.model.ForgotPasswordResponse
-import com.mulosbron.goldmarketcap.model.GoldPrice
+import com.mulosbron.goldmarketcap.model.DailyGoldPrice
 import com.mulosbron.goldmarketcap.model.ResetPasswordRequest
 import com.mulosbron.goldmarketcap.model.ResetPasswordResponse
 import com.mulosbron.goldmarketcap.model.Transaction
@@ -212,7 +212,7 @@ class ApiService(private val context: Fragment) {
 
     fun fetchGoldPrices(
         compositeDisposable: CompositeDisposable,
-        callback: (Map<String, GoldPrice>) -> Unit
+        callback: (Map<String, DailyGoldPrice>) -> Unit
     ) {
         val goldPricesAPI = getRetrofit().create(GoldPricesAPI::class.java)
         compositeDisposable.add(
@@ -263,8 +263,8 @@ class ApiService(private val context: Fragment) {
                 .getLatestGoldPrices()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ goldPrices ->
-                    val goldNames = goldPrices.keys.toList()
+                .subscribe({ DailyGoldPrice ->
+                    val goldNames = DailyGoldPrice.keys.toList()
                     callback(goldNames)
                 }, { error ->
                     Toast.makeText(
@@ -308,10 +308,10 @@ class ApiService(private val context: Fragment) {
     }
 
 
-    fun fetchGoldPrice(productName: String, updatePrice: (GoldPrice) -> Unit) {
+    fun fetchGoldPrice(productName: String, updatePrice: (DailyGoldPrice) -> Unit) {
         val goldPricesAPI = getRetrofit().create(GoldPricesAPI::class.java)
-        goldPricesAPI.getGoldPrice(productName).enqueue(object : Callback<GoldPrice> {
-            override fun onResponse(call: Call<GoldPrice>, response: Response<GoldPrice>) {
+        goldPricesAPI.getGoldPrice(productName).enqueue(object : Callback<DailyGoldPrice> {
+            override fun onResponse(call: Call<DailyGoldPrice>, response: Response<DailyGoldPrice>) {
                 if (response.isSuccessful) {
                     response.body()?.let {
                         updatePrice(it)
@@ -325,7 +325,7 @@ class ApiService(private val context: Fragment) {
                 }
             }
 
-            override fun onFailure(call: Call<GoldPrice>, t: Throwable) {
+            override fun onFailure(call: Call<DailyGoldPrice>, t: Throwable) {
                 Toast.makeText(context.requireContext(), "Error: ${t.message}", Toast.LENGTH_LONG)
                     .show()
             }
@@ -383,7 +383,7 @@ class ApiService(private val context: Fragment) {
     }
 
     fun calculateProfits(
-        goldPrices: Map<String, GoldPrice>,
+        goldPrices: Map<String, DailyGoldPrice>,
         transactions: Map<String, List<Transaction>>
     ): Map<String, Double> {
         val profits = mutableMapOf<String, Double>()
@@ -406,7 +406,7 @@ class ApiService(private val context: Fragment) {
     }
 
     fun calculateTotalPortfolioValue(
-        goldPrices: Map<String, GoldPrice>,
+        goldPrices: Map<String, DailyGoldPrice>,
         transactions: Map<String, List<Transaction>>
     ): Double {
         var totalValue = 0.0

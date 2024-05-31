@@ -6,20 +6,18 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.mulosbron.goldmarketcap.R
 import com.mulosbron.goldmarketcap.adapter.AddTransactionAdapter
+import com.mulosbron.goldmarketcap.databinding.FragmentAddTransactionBinding
 import com.mulosbron.goldmarketcap.service.ApiService
 import com.mulosbron.goldmarketcap.view.MainActivity
 import io.reactivex.disposables.CompositeDisposable
 
 class AddTransactionFragment : Fragment() {
 
-    private lateinit var searchEditText: EditText
-    private lateinit var goldAssetsRecyclerView: RecyclerView
+    private var _binding: FragmentAddTransactionBinding? = null
+    private val binding get() = _binding!!
     private lateinit var apiService: ApiService
     private var compositeDisposable: CompositeDisposable? = null
     private lateinit var adapter: AddTransactionAdapter
@@ -28,19 +26,18 @@ class AddTransactionFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_add_transaction, container, false)
+    ): View {
+        _binding = FragmentAddTransactionBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchEditText = view.findViewById(R.id.etSearchGold)
-        goldAssetsRecyclerView = view.findViewById(R.id.rvGoldItems)
         apiService = ApiService(this)
         compositeDisposable = CompositeDisposable()
 
-        goldAssetsRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.rvGoldItems.layoutManager = LinearLayoutManager(context)
         adapter = AddTransactionAdapter { selectedGoldName ->
             val bundle = Bundle()
             bundle.putString("goldName", selectedGoldName)
@@ -48,13 +45,13 @@ class AddTransactionFragment : Fragment() {
             addAssetFragment.arguments = bundle
             (activity as? MainActivity)?.replaceFragment(addAssetFragment)
         }
-        goldAssetsRecyclerView.adapter = adapter
+        binding.rvGoldItems.adapter = adapter
 
         apiService.fetchGoldAssets(compositeDisposable!!) { goldAssets ->
             adapter.updateGoldAssets(goldAssets)
         }
 
-        searchEditText.addTextChangedListener(object : TextWatcher {
+        binding.etSearchGold.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -73,8 +70,9 @@ class AddTransactionFragment : Fragment() {
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         compositeDisposable?.clear()
+        _binding = null
     }
 }
