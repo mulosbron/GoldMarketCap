@@ -19,40 +19,65 @@ coverage.xml
 .pyenv
 .python-version
 
+# Kotlin
+/build/
+*.iml
+.gradle/
+.idea/
+out/
+*.log
+*.jar
+*.war
+*.ear
+*.class
+*.apk
+*.dex
+
+# .NET Core
+bin/
+obj/
+*.csproj.user
+*.suo
+*.sln.docstates
+*.userosscache
+*.sln.cache
+.vscode/
+**/[Ll]og/
+_ReSharper.*/
+*.sln.ide
+
 # Node / React Native
 node_modules/
 npm-debug.log
 yarn-error.log
 yarn-debug.log
 
-# .NET
-**/[Ll]og/
-*.user
-*.suo
-*.userprefs
-*.sln.docstates
-*.userosscache
-*.sln.cache
-*.csproj.user
-*.vbproj.user
-*.swp
-*.swo
-ReSharper/
-_ReSharper.*/
-*.sln.ide
+# General JetBrains IDEs (.idea folder)
+.idea/
+*.iws
+*.ipr
 
-# MongoDB specific files (if any)
-mongod.conf
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Compiled source #
-###################
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Compiled source
 *.com
 *.class
 *.o
 *.so
 
-# Packages #
-############
+# Packages
 *.7z
 *.dmg
 *.gz
@@ -63,18 +88,5 @@ mongod.conf
 *.zip
 *.tgz
 
-# Logs and databases #
-######################
-*.log
-*.sql
-*.sqlite
-
-# OS generated files #
-######################
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# MongoDB specific files (if any)
+mongod.conf
